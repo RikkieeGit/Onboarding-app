@@ -1,0 +1,16 @@
+# Environment - NEVER push this
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Docker
+*.log
+
+# SSL certs
+*.pem
+*.key
