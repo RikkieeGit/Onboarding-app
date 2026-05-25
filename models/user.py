@@ -1,5 +1,4 @@
 from pydantic import BaseModel, EmailStr
-from typing import Optional
 
 class SignInRequest(BaseModel):
     email: str
@@ -8,13 +7,12 @@ class SignInRequest(BaseModel):
 class RegisterRequest(BaseModel):
     name: str
     email: EmailStr
-    phone: str
     password: str
 
 class VerifyRequest(BaseModel):
-    phone: str        # phone number OR email depending on flow
+    phone: str    # frontend sends email here despite the field name
     otp: str
-    flow: str         # "signin" or "signup"
+    flow: str
 
 class ForgotRequest(BaseModel):
     email: EmailStr

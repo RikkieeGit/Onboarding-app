@@ -1,15 +1,14 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 from models.user import ForgotRequest
-from services import ad, sms
+from services import ad, otp, email
 
 router = APIRouter()
 
 @router.post("/forgot-password")
 async def forgot_password(body: ForgotRequest):
-    phone = ad.get_user_phone(body.email)
-    if not phone:
-        # Don't reveal if email exists — security best practice
-        return { "message": "If that email exists, a code has been sent." }
-
-    sms.send_otp(phone)
-    return { "message": "If that email exists, a code has been sent." }
+    # Don't reveal if email exists — security best practice
+    exists = ad.user_exists(body.email)
+    if exists:
+        code = otp.generate_otp(body.email)
+        email.send_otp_email(body.email, code)
+    return { "message": "If that email exists, a reset code has been sent." }

@@ -5,15 +5,18 @@ services:
     build: .
     container_name: onboarding-api
     restart: always
-    ports:
-      - "8443:8000"
+    network_mode: host
     env_file:
       - .env
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /usr/bin/samba-tool:/usr/bin/samba-tool:ro
+      - /etc/samba:/etc/samba:ro
+      - /var/lib/samba:/var/lib/samba:ro
+      - /run/samba:/run/samba:ro
     command: >
       uvicorn main:app
       --host 0.0.0.0
-      --port 8000
+      --port 8443
       --ssl-keyfile /etc/letsencrypt/live/rikkiee-onboarding.duckdns.org/privkey.pem
       --ssl-certfile /etc/letsencrypt/live/rikkiee-onboarding.duckdns.org/fullchain.pem
